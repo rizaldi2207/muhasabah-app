@@ -1,0 +1,15 @@
+# Override produksi.
+# Pakai bersama file utama:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+#
+# Tujuan: container "web" hanya di-bind ke localhost (127.0.0.1), sehingga TIDAK
+# bisa diakses langsung dari internet. Nginx host yang menjadi pintu masuk
+# (reverse proxy + TLS) lalu meneruskan ke 127.0.0.1:${WEB_PORT}.
+services:
+  web:
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8080}:80"
+    restart: always
+
+  api:
+    restart: always
