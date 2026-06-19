@@ -105,6 +105,15 @@ curl -I http://127.0.0.1:8080     # harus mengembalikan 200 dari container web
 
 `restart: always` membuat container otomatis hidup lagi setelah reboot.
 
+> **Jika port 8080 sudah dipakai servis lain di VPS**, ganti ke port lokal yang bebas
+> (mis. 8090) di **dua tempat** yang harus sama:
+> 1. `.env` → `WEB_PORT=8090`
+> 2. `deploy/nginx/muhasabah-harian.conf` → blok `upstream muhasabah_web { server 127.0.0.1:8090; }`
+>
+> Cek port yang bebas: `sudo ss -ltnp | grep :8090` (kosong = bebas). Lalu jalankan ulang
+> stack (`docker compose ... up -d`) dan `sudo nginx -t && sudo systemctl reload nginx`.
+> Port internal container tetap 80/3001 (di jaringan Docker) — tidak perlu diubah.
+
 ## 6. Pasang Nginx reverse proxy
 
 ```bash
