@@ -1,0 +1,17 @@
+{
+  "name": "Muhasabah Harian",
+  "short_name": "Muhasabah",
+  "description": "Tracking kegiatan harian dengan rekap dan dashboard",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06231b",
+  "theme_color": "#0a221b",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =======================================================================
+   Muhasabah Harian — tema "Iluminasi Manuskrip"
+   Hijau zamrud · emas · perkamen, dengan motif bintang delapan & mihrab.
+   ======================================================================= */
+
+:root {
+  --gold: #a07628;
+  --gold-bright: #bd8f2c;
+  --gold-soft: rgba(160, 118, 40, 0.28);
+  --glow-a: rgba(189, 143, 44, 0.16);
+  --glow-b: rgba(19, 100, 66, 0.14);
+  --pattern: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='72'%20height='72'%20viewBox='0%200%2072%2072'%3E%3Cg%20fill='none'%20stroke='%23a07628'%20stroke-opacity='0.16'%20stroke-width='1'%3E%3Crect%20x='18'%20y='18'%20width='36'%20height='36'/%3E%3Crect%20x='18'%20y='18'%20width='36'%20height='36'%20transform='rotate(45%2036%2036)'/%3E%3Ccircle%20cx='36'%20cy='36'%20r='3.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+html.dark {
+  --gold: #d4a83f;
+  --gold-bright: #e3c06a;
+  --gold-soft: rgba(227, 192, 106, 0.22);
+  --glow-a: rgba(227, 192, 106, 0.12);
+  --glow-b: rgba(27, 124, 82, 0.18);
+  --pattern: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='72'%20height='72'%20viewBox='0%200%2072%2072'%3E%3Cg%20fill='none'%20stroke='%23e3c06a'%20stroke-opacity='0.10'%20stroke-width='1'%3E%3Crect%20x='18'%20y='18'%20width='36'%20height='36'/%3E%3Crect%20x='18'%20y='18'%20width='36'%20height='36'%20transform='rotate(45%2036%2036)'/%3E%3Ccircle%20cx='36'%20cy='36'%20r='3.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply font-sans text-stone-800 dark:text-stone-100;
+    background-color: #f3ead6;
+    background-image:
+      radial-gradient(120% 80% at 50% -10%, var(--glow-a), transparent 55%),
+      radial-gradient(90% 60% at 100% 100%, var(--glow-b), transparent 60%),
+      linear-gradient(180deg, #f6efe0 0%, #efe4cb 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  html.dark body {
+    background-color: #06231b;
+    background-image:
+      radial-gradient(120% 80% at 50% -10%, var(--glow-a), transparent 55%),
+      radial-gradient(90% 70% at 100% 100%, var(--glow-b), transparent 60%),
+      linear-gradient(180deg, #0a2820 0%, #051712 100%);
+  }
+
+  /* Hamparan motif bintang delapan, halus & tetap. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: var(--pattern);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.9;
+  }
+
+  #root {
+    position: relative;
+    z-index: 1;
+  }
+
+  ::selection {
+    background: var(--gold-bright);
+    color: #06231b;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--gold-soft);
+    border-radius: 999px;
+  }
+}
+
+@layer components {
+  /* ---- Kartu: hairline emas + bayang lembut ---- */
+  .card {
+    @apply relative rounded-2xl border bg-white/85 p-5 shadow-soft backdrop-blur-sm
+           dark:bg-emerald-950/60;
+    border-color: var(--gold-soft);
+  }
+  /* Garis emas tipis di tepi atas tiap kartu. */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    margin: 0 1.25rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+  }
+
+  /* Lengkung mihrab di sisi atas (untuk elemen sorotan). */
+  .mihrab {
+    border-top-left-radius: 9999px 1.75rem;
+    border-top-right-radius: 9999px 1.75rem;
+  }
+
+  /* ---- Tombol ---- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold
+           transition active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn text-white;
+    background: linear-gradient(135deg, #136442, #0b3023);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 8px 22px -12px rgba(11, 48, 35, 0.7);
+    border: 1px solid var(--gold-soft);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #1b7c52, #0f4f36);
+  }
+  .btn-gold {
+    @apply btn;
+    color: #06231b;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+    box-shadow: 0 8px 22px -12px rgba(160, 118, 40, 0.8);
+  }
+  .btn-ghost {
+    @apply btn border bg-white/70 text-stone-700 hover:bg-white
+           dark:bg-emerald-950/50 dark:text-stone-200 dark:hover:bg-emerald-900/60;
+    border-color: var(--gold-soft);
+  }
+
+  /* ---- Formulir ---- */
+  .input {
+    @apply w-full rounded-xl border bg-white/80 px-3 py-2 text-sm text-stone-800 outline-none
+           transition placeholder:text-stone-400
+           focus:ring-2 focus:ring-gold-300/50
+           dark:bg-emerald-950/50 dark:text-stone-100;
+    border-color: var(--gold-soft);
+  }
+  .input:focus {
+    border-color: var(--gold);
+  }
+  .label {
+    @apply mb-1 block font-display text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400;
+  }
+
+  /* ---- Ornamen ---- */
+  .gold-text {
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Bintang Rub el Hizb sebagai penanda judul bagian. */
+  .ornament-star::before {
+    content: '۞';
+    @apply mr-2 align-middle text-base;
+    color: var(--gold);
+  }
+  /* Pembatas berhias bintang di tengah. */
+  .divider-ornament {
+    @apply flex items-center justify-center gap-3 text-center;
+    color: var(--gold);
+  }
+  .divider-ornament::before,
+  .divider-ornament::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, transparent, var(--gold-soft));
+  }
+  .divider-ornament::after {
+    background: linear-gradient(90deg, var(--gold-soft), transparent);
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: Amiri, Georgia, serif; }
+  .text-shadow-gold { text-shadow: 0 1px 12px rgba(189, 143, 44, 0.35); }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-rise {
+    opacity: 0;
+    animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
