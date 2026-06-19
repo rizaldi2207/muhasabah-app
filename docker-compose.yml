@@ -14,6 +14,8 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
     volumes:
       - app-data:/data
+    networks:
+      - muhasabah-net
     healthcheck:
       test:
         - CMD
@@ -36,7 +38,14 @@ services:
         condition: service_healthy
     ports:
       - "${WEB_PORT:-8080}:80"
+    networks:
+      - muhasabah-net
     restart: unless-stopped
+
+networks:
+  muhasabah-net:
+    name: muhasabah-net
+    driver: bridge
 
 volumes:
   app-data:

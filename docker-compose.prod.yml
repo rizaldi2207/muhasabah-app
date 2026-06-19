@@ -7,7 +7,11 @@
 # (reverse proxy + TLS) lalu meneruskan ke 127.0.0.1:${WEB_PORT}.
 services:
   web:
-    ports:
+    # `!override` WAJIB: tanpa ini Compose MENGGABUNGKAN daftar ports dengan yang
+    # di docker-compose.yml (0.0.0.0:PORT), sehingga port dibinding dua kali dan
+    # selalu gagal "address already in use" berapa pun portnya. Tag ini membuat
+    # daftar berikut MENGGANTIKAN, bukan menambah.
+    ports: !override
       - "127.0.0.1:${WEB_PORT:-8080}:80"
     restart: always
 
